@@ -40,7 +40,7 @@ public class EmployeeController {
         this.employeeService = employeeService;
     }
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<EmployeeVO> createEmployee(@RequestBody @Valid EmployeeVO employeeVO) {
         logger.info(Constants.CREATING_EMPLOYEE_LOG, employeeVO);
         EmployeeVO createdEmployee = employeeService.createEmployee(employeeVO);
