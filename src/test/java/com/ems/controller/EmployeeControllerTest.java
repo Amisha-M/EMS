@@ -10,15 +10,18 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.ems.service.EmployeeService;
 import com.ems.vo.EmployeeVO;
 
+@ExtendWith(MockitoExtension.class)
 public class EmployeeControllerTest {
 	
 	@Mock
@@ -34,7 +37,7 @@ public class EmployeeControllerTest {
 
     @Test
     void testCreateEmployee() {
-        EmployeeVO employeeVO = new EmployeeVO(1L, "John Doe", "Developer", 50000L);
+        EmployeeVO employeeVO = new EmployeeVO(1L, "Amar Singh", "Software Eng", 50000L);
         
         when(employeeService.createEmployee(any(EmployeeVO.class))).thenReturn(employeeVO);
 
@@ -46,8 +49,8 @@ public class EmployeeControllerTest {
 
     @Test
     void testGetAllEmployees() {
-        EmployeeVO employee1 = new EmployeeVO(1L, "John Doe", "Developer", 50000L);
-        EmployeeVO employee2 = new EmployeeVO(2L, "Jane Doe", "Manager", 70000L);
+        EmployeeVO employee1 = new EmployeeVO(1L, "Amar Singh", "Software Eng", 50000L);
+        EmployeeVO employee2 = new EmployeeVO(2L, "Ankit Gupta", "Sr. Software Eng", 70000L);
         
         when(employeeService.getAllEmployees()).thenReturn(Arrays.asList(employee1, employee2));
 
@@ -61,7 +64,7 @@ public class EmployeeControllerTest {
 
     @Test
     void testGetEmployeeById() {
-        EmployeeVO employeeVO = new EmployeeVO(1L, "John Doe", "Developer", 50000L);
+        EmployeeVO employeeVO = new EmployeeVO(1L, "Amar Singh", "Software Eng", 50000L);
         
         when(employeeService.getEmployeeById(1L)).thenReturn(Optional.of(employeeVO));
 

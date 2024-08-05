@@ -10,16 +10,18 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.ems.EmployeeMapper;
 import com.ems.bo.EmployeeBO;
 import com.ems.entity.Employee;
 import com.ems.vo.EmployeeVO;
 
+@ExtendWith(MockitoExtension.class)
 public class EmployeeServiceImplTest {
 	
 	@Mock
@@ -38,8 +40,8 @@ public class EmployeeServiceImplTest {
 
     @Test
     void testCreateEmployee() {
-        EmployeeVO employeeVO = new EmployeeVO(1L, "John Doe", "Developer", 50000L);
-        Employee employee = new Employee(1L, "John Doe", "Developer", 50000L);
+        EmployeeVO employeeVO = new EmployeeVO(1L, "Amar Singh", "Software Eng", 50000L);
+        Employee employee = new Employee(1L, "Amar Singh", "Software Eng", 50000L);
         
         when(employeeMapper.employeeVOToEmployee(any(EmployeeVO.class))).thenReturn(employee);
         when(employeeBO.createEmployee(any(Employee.class))).thenReturn(employee);
@@ -52,13 +54,13 @@ public class EmployeeServiceImplTest {
 
     @Test
     void testGetAllEmployees() {
-        Employee employee1 = new Employee(1L, "John Doe", "Developer", 50000L);
-        Employee employee2 = new Employee(2L, "Jane Doe", "Manager", 70000L);
+        Employee employee1 = new Employee(1L, "Amar Singh", "Software Eng", 50000L);
+        Employee employee2 = new Employee(2L, "Ankit Gupta", "Sr. Software Eng", 70000L);
         
         when(employeeBO.getAllEmployees()).thenReturn(Arrays.asList(employee1, employee2));
         when(employeeMapper.employeeToEmployeeVO(any(Employee.class))).thenReturn(
-            new EmployeeVO(1L, "John Doe", "Developer", 50000L),
-            new EmployeeVO(2L, "Jane Doe", "Manager", 70000L)
+            new EmployeeVO(1L, "Amar Singh", "Software Eng", 50000L),
+            new EmployeeVO(2L, "Ankit Gupta", "Sr. Software Eng", 70000L)
         );
 
         List<EmployeeVO> employees = employeeServiceImpl.getAllEmployees();
@@ -68,8 +70,8 @@ public class EmployeeServiceImplTest {
 
     @Test
     void testGetEmployeeById() {
-        Employee employee = new Employee(1L, "John Doe", "Developer", 50000L);
-        EmployeeVO employeeVO = new EmployeeVO(1L, "John Doe", "Developer", 50000L);
+        Employee employee = new Employee(1L, "Amar Singh", "Software Eng", 50000L);
+        EmployeeVO employeeVO = new EmployeeVO(1L, "Amar Singh", "Software Eng", 50000L);
         
         when(employeeBO.getEmployeeById(1L)).thenReturn(Optional.of(employee));
         when(employeeMapper.employeeToEmployeeVO(any(Employee.class))).thenReturn(employeeVO);
