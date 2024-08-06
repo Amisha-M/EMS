@@ -21,7 +21,7 @@ import org.springframework.http.ResponseEntity;
 import com.ems.service.EmployeeService;
 import com.ems.vo.EmployeeVO;
 
-@ExtendWith(MockitoExtension.class)
+//@ExtendWith(MockitoExtension.class)
 public class EmployeeControllerTest {
 	
 	@Mock
@@ -64,11 +64,12 @@ public class EmployeeControllerTest {
 
     @Test
     void testGetEmployeeById() {
-        EmployeeVO employeeVO = new EmployeeVO(1L, "Amar Singh", "Software Eng", 50000L);
+    	Long id = 1L;
+        EmployeeVO employeeVO = new EmployeeVO(id, "Amar Singh", "Software Eng", 50000L);
         
-        when(employeeService.getEmployeeById(1L)).thenReturn(Optional.of(employeeVO));
+        when(employeeService.getEmployeeById(id)).thenReturn(Optional.of(employeeVO));
 
-        ResponseEntity<EmployeeVO> responseEntity = employeeController.getEmployeeById(1L);
+        ResponseEntity<EmployeeVO> responseEntity = employeeController.getEmployeeById(id);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals(employeeVO, responseEntity.getBody());

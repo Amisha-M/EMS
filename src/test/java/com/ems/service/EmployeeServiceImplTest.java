@@ -21,7 +21,7 @@ import com.ems.bo.EmployeeBO;
 import com.ems.entity.Employee;
 import com.ems.vo.EmployeeVO;
 
-@ExtendWith(MockitoExtension.class)
+//@ExtendWith(MockitoExtension.class)
 public class EmployeeServiceImplTest {
 	
 	@Mock
@@ -42,7 +42,7 @@ public class EmployeeServiceImplTest {
     void testCreateEmployee() {
         EmployeeVO employeeVO = new EmployeeVO(1L, "Amar Singh", "Software Eng", 50000L);
         Employee employee = new Employee(1L, "Amar Singh", "Software Eng", 50000L);
-        
+
         when(employeeMapper.employeeVOToEmployee(any(EmployeeVO.class))).thenReturn(employee);
         when(employeeBO.createEmployee(any(Employee.class))).thenReturn(employee);
         when(employeeMapper.employeeToEmployeeVO(any(Employee.class))).thenReturn(employeeVO);
@@ -56,7 +56,7 @@ public class EmployeeServiceImplTest {
     void testGetAllEmployees() {
         Employee employee1 = new Employee(1L, "Amar Singh", "Software Eng", 50000L);
         Employee employee2 = new Employee(2L, "Ankit Gupta", "Sr. Software Eng", 70000L);
-        
+
         when(employeeBO.getAllEmployees()).thenReturn(Arrays.asList(employee1, employee2));
         when(employeeMapper.employeeToEmployeeVO(any(Employee.class))).thenReturn(
             new EmployeeVO(1L, "Amar Singh", "Software Eng", 50000L),
@@ -72,13 +72,24 @@ public class EmployeeServiceImplTest {
     void testGetEmployeeById() {
         Employee employee = new Employee(1L, "Amar Singh", "Software Eng", 50000L);
         EmployeeVO employeeVO = new EmployeeVO(1L, "Amar Singh", "Software Eng", 50000L);
-        
-        when(employeeBO.getEmployeeById(1L)).thenReturn(Optional.of(employee));
-        when(employeeMapper.employeeToEmployeeVO(any(Employee.class))).thenReturn(employeeVO);
 
+        when(employeeBO.getEmployeeById(1L)).thenReturn(Optional.of(employee));
+        when(employeeMapper.employeeToEmployeeVO(employee)).thenReturn(employeeVO);
+
+        // Logging for debugging
+        System.out.println("Mock setup done");
+
+        // Calling the service method
         Optional<EmployeeVO> foundEmployeeVO = employeeServiceImpl.getEmployeeById(1L);
 
-        assertEquals(employeeVO, foundEmployeeVO.get());
+        // Logging for debugging
+        System.out.println("Found Employee VO: " + foundEmployeeVO);
+
+        //assertEquals(employeeVO, foundEmployeeVO.get());
+        assertEquals(Optional.of(employeeVO), foundEmployeeVO);
+
     }
+
+
 
 }
