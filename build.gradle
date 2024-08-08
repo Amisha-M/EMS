@@ -49,8 +49,18 @@ dependencies {
     testImplementation 'org.junit.platform:junit-platform-suite-engine:1.10.3'
     testImplementation 'io.cucumber:cucumber-junit-platform-engine:7.18.1'
     testImplementation 'org.junit.vintage:junit-vintage-engine:5.10.0' // For JUnit 4 runner
- 
- 
+ 	//Jaxb
+	implementation 'org.eclipse.persistence:eclipselink:4.0.4'
+    // EclipseLink MOXy for JSON binding
+    implementation 'org.eclipse.persistence:org.eclipse.persistence.moxy:4.0.4'
+    implementation 'jakarta.xml.bind:jakarta.xml.bind-api:4.0.2'
+    // Implementation of Jakarta JSON API
+    implementation 'org.glassfish:jakarta.json:2.0.1'
+
+//JAXB API
+//    implementation 'org.glassfish.jaxb:jaxb-runtime:4.0.4'
+    // Jakarta JSON API
+//    implementation 'jakarta.json:jakarta.json-api:2.1.3'
 }
 
 
