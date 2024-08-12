@@ -14,35 +14,36 @@ import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
-//@EnableAutoConfiguration
-//@EnableBatchProcessing
-public class JobConfig {
+public class JobConfigH2ToCsv {
 
-    private static final Logger logger = LoggerFactory.getLogger(JobConfig.class);
+    private static final Logger logger = LoggerFactory.getLogger(JobConfigH2ToCsv.class);
 
     @Bean
-    public Job createJob(JobRepository jobRepository,
+    @Qualifier("h2ToCsvJob")
+    public Job h2ToCsvJob(JobRepository jobRepository,
                          JobListener listener,
-                         Step step1) {
-        return new JobBuilder("JobExample", jobRepository)
+                         Step h2ToCsvStep) {
+        return new JobBuilder("H2ToCsvJob", jobRepository)
                 .incrementer(new RunIdIncrementer())
                 .listener(listener)
-                .start(step1)
+                .start(h2ToCsvStep)
                 .build();
     }
 
     @Bean
-    public Step createStep(JobRepository jobRepository,
+    @Qualifier("h2ToCsvStep")
+    public Step h2ToCsvStep(JobRepository jobRepository,
                            PlatformTransactionManager transactionManager,
                            EmployeeItemReader reader,
                            EmployeeItemProcessor processor,
                            EmployeeItemWriter writer) {
-        return new StepBuilder("JobExample-step1", jobRepository)
+        return new StepBuilder("H2ToCsvStep", jobRepository)
                 .<Employee, Employee>chunk(10, transactionManager)
                 .reader(reader)
                 .processor(processor)

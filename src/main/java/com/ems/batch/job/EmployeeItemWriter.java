@@ -16,7 +16,7 @@ public class EmployeeItemWriter implements ItemWriter<Employee> {
 
     private static final Logger logger = LoggerFactory.getLogger(EmployeeItemWriter.class);
     private static final String FILE_HEADER = "ID,Name,Position,Salary";
-    private static final String FILE_NAME = "src/main/resources/employees.csv";
+    private static final String FILE_NAME = "src/main/resources/employeesH2ToCsv.csv";
 
     @Override
     public void write(Chunk<? extends Employee> employees) throws IOException {
