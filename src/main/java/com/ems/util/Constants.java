@@ -13,6 +13,12 @@ public final class Constants {
     // Error messages
     public static final String EMPLOYEE_NOT_FOUND = "Employee not found with ID: {}";
 
+
+    public static final String RUNNING_BATCH_JOB_LOG = "Running batch job";
+    // Batch job success/failure messages
+    public static final String BATCH_JOB_SUCCESS = "Batch job completed successfully.";
+    public static final String BATCH_JOB_FAILURE = "Batch job failed.";
+
     // Prevent instantiation
     private Constants() {
         throw new UnsupportedOperationException("Cannot instantiate utility class.");

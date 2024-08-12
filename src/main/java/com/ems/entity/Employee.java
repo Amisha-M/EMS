@@ -21,13 +21,13 @@ public class Employee {
 	 @GeneratedValue(strategy = GenerationType.IDENTITY)
 	 private Long id;
 	 
-//	 @Column
+	 @Column
 	 private String name;
 	 
-//	 @Column
+	 @Column
 	 private String position;
 	 
-//	 @Column
+	 @Column
 	 private Long salary;
 
 	
