@@ -10,13 +10,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @XmlRootElement(name = "employee")
 @XmlAccessorType(XmlAccessType.FIELD)
 //@XmlType(propOrder = { "id", "name", "position", "salary" })
-public class EmployeeVO {
+public class EmployeeVO implements Serializable {
 	
 	private Long id;
 

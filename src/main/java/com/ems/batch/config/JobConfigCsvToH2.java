@@ -41,7 +41,7 @@ public class JobConfigCsvToH2 {
                       EmployeeItemProcessor processor,
                       EmployeeItemWriterCsvToH2 writer) {
         return new StepBuilder("CsvToH2Step", jobRepository)
-                .<Employee, Employee>chunk(10, transactionManager)
+                .<Employee, Employee>chunk(5, transactionManager)
                 .reader(reader)
                 .processor(processor)
                 .writer(writer)

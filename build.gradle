@@ -4,6 +4,7 @@ plugins {
 	id 'org.springframework.boot' version '3.3.2'
 	id 'io.spring.dependency-management' version '1.1.6'
     id 'io.gatling.gradle' version '3.11.5'
+//    id "org.openapi.generator" version "7.7.0"
 }
 
 group = 'com.ems'
@@ -78,9 +79,8 @@ dependencies {
     // CSV File Handling
     implementation 'org.springframework.batch:spring-batch-core'
     implementation 'org.apache.commons:commons-csv:1.11.0'
-
-    
-
+    //integration between spring-boot and swagger-ui
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0'
 }
 
 

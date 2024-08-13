@@ -1,4 +1,4 @@
-package com.ems.batch.controller;
+package com.ems.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +21,10 @@ public class BatchJobController {
     @Autowired
     @Qualifier("csvToH2Job")
     private Job csvToH2Job;
+
+    @Autowired
+    @Qualifier("taskletJob")
+    private Job taskletJob;
 
     @Autowired
     private JobLauncher jobLauncher;
@@ -49,6 +53,25 @@ public class BatchJobController {
 
         logger.info("CSV to H2 Job {} done...", jobExecution.getJobInstance().getJobName());
         return jobExecution.getStatus();
+    }
+
+    @GetMapping("/startTaskletJob")
+    public String startJob() {
+        try {
+            JobParameters jobParameters = new JobParametersBuilder()
+                    .addLong("time", System.currentTimeMillis()) // Adding timestamp to ensure job runs each time
+                    .toJobParameters();
+
+            JobExecution jobExecution = jobLauncher.run(taskletJob, jobParameters);
+
+            logger.info("Job Status : {}", jobExecution.getStatus());
+            logger.info("Job completed...");
+
+            return "Job completed with status: " + jobExecution.getStatus();
+        } catch (JobExecutionException e) {
+            logger.error("Job failed", e);
+            return "Job failed: " + e.getMessage();
+        }
     }
 }
 
