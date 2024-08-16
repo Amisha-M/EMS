@@ -4,7 +4,7 @@ plugins {
 	id 'org.springframework.boot' version '3.3.2'
 	id 'io.spring.dependency-management' version '1.1.6'
     id 'io.gatling.gradle' version '3.11.5'
-//    id "org.openapi.generator" version "7.7.0"
+    id "org.openapi.generator" version "7.7.0"
 }
 
 group = 'com.ems'
@@ -71,7 +71,7 @@ dependencies {
     testImplementation 'io.gatling:gatling-core:3.11.5'
     testImplementation 'io.gatling:gatling-http:3.11.5'
     // Scala-specific dependencies
-    implementation 'org.scala-lang:scala-library:2.13.8'
+    implementation 'org.scala-lang:scala-library:2.13.14'
     //Spring Batch
     implementation 'org.springframework.boot:spring-boot-starter-batch'
 //    implementation 'org.springframework.batch:spring-batch-core:5.0.0'
@@ -81,9 +81,25 @@ dependencies {
     implementation 'org.apache.commons:commons-csv:1.11.0'
     //integration between spring-boot and swagger-ui
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0'
+
+//    implementation 'io.swagger.core.v3:swagger-annotations:2.2.11'
+    implementation 'jakarta.validation:jakarta.validation-api:3.0.2'
 }
 
+openApiGenerate {
+    generatorName = "spring" // You can use other generators if needed
+    inputSpec = "$rootDir/src/main/resources/openapi/api-docs.json" // Path to your OpenAPI spec file from Application 2
+    outputDir = "$buildDir/generated" // The output directory for generated code
+    apiPackage = "com.ems.api" // Package name for generated API interfaces
+    modelPackage = "com.ems.model" // Package name for generated models
+    configOptions = [
+            dateLibrary: "java8" // Use Java 8 date types
+    ]
+}
 
+bootJar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE // Handle duplicate entries
+}
 
 tasks.named('test') {
 	useJUnitPlatform()

@@ -4,11 +4,11 @@ import static org.junit.Assert.*;
 import java.util.List;
 import java.util.Optional;
 
+import com.ems.bo.EmployeeBO;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
 import com.ems.service.EmployeeService;
-import com.ems.vo.EmployeeVO;
 
 import io.cucumber.java.en.*;
 
@@ -18,15 +18,15 @@ public class EmployeeServiceSteps {
     @Autowired
     private EmployeeService employeeService;
 
-    private EmployeeVO employee;
-    private EmployeeVO createdEmployee;
-    private List<EmployeeVO> employees;
-    private Optional<EmployeeVO> employeeById;
+    private EmployeeBO employee;
+    private EmployeeBO createdEmployee;
+    private List<EmployeeBO> employees;
+    private Optional<EmployeeBO> employeeById;
     private Long employeeId;
 
     @Given("I have employee data")
     public void i_have_employee_data() {
-        employee = new EmployeeVO(null, "John Doe", "Developer", 20000L);
+        employee = new EmployeeBO(null, "John Doe", "Developer", 20000L);
     }
 
     @When("I create the employee")
@@ -42,8 +42,8 @@ public class EmployeeServiceSteps {
 
     @Given("there are employees in the system")
     public void there_are_employees_in_the_system() {
-        employeeService.createEmployee(new EmployeeVO(null, "Jane Smith", "Manager", 30000L));
-        employeeService.createEmployee(new EmployeeVO(null, "Bob Brown", "Analyst", 25000L));
+        employeeService.createEmployee(new EmployeeBO(null, "Jane Smith", "Manager", 30000L));
+        employeeService.createEmployee(new EmployeeBO(null, "Bob Brown", "Analyst", 25000L));
     }
 
     @When("I retrieve all employees")
@@ -59,7 +59,7 @@ public class EmployeeServiceSteps {
     @Given("there is an employee with ID {long}")
     public void there_is_an_employee_with_id(Long id) {
         // Create and save an employee with the given ID
-        employee = new EmployeeVO(id, "Alice Green", "Designer", 28000L);
+        employee = new EmployeeBO(id, "Alice Green", "Designer", 28000L);
         createdEmployee = employeeService.createEmployee(employee);
         employeeId = createdEmployee.getId();
     }

@@ -1,7 +1,7 @@
 package com.ems.batch.tasklet;
 
 import com.ems.EmployeeMapper;
-import com.ems.vo.EmployeeVO;
+import com.ems.bo.EmployeeBO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.StepContribution;
@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class ProcessorTasklet implements Tasklet {
@@ -28,16 +27,20 @@ public class ProcessorTasklet implements Tasklet {
 
     @Override
     public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
-        List<EmployeeVO> employeeVOs = (List<EmployeeVO>) chunkContext.getStepContext().getStepExecution().getJobExecution().getExecutionContext().get("employeeVOs");
+        List<EmployeeBO> employeeBOs = (List<EmployeeBO>) chunkContext.getStepContext().getStepExecution().getJobExecution().getExecutionContext().get("employeeBOs");
 
-        // Example processing: filter employees with salary > 50000
-//        List<EmployeeVO> processedEmployeeVOs = employeeVOs.stream()
-//                .filter(vo -> vo.getSalary() > 50000)
-//                .collect(Collectors.toList());
+//        if (employeeBOs != null) {
+//            // Example processing: filter employees with salary > 50000
+//            List<EmployeeBO> processedEmployeeBOs = employeeBOs.stream()
+//                    .filter(bo -> bo.getSalary() > 50000)
+//                    .toList();
 //
-//        chunkContext.getStepContext().getStepExecution().getJobExecution().getExecutionContext().put("processedEmployeeVOs", processedEmployeeVOs);
-
-        logger.info("Processed {} employees", employeeVOs.size());
+//            chunkContext.getStepContext().getStepExecution().getJobExecution().getExecutionContext().put("processedEmployeeBOs", processedEmployeeBOs);
+//
+//            logger.info("Processed {} employees", processedEmployeeBOs.size());
+//        } else {
+//            logger.warn("No employeeBOs found in execution context");
+//        }
 
         return RepeatStatus.FINISHED;
     }

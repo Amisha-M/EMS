@@ -1,9 +1,9 @@
 package com.ems.batch.tasklet;
 
 import com.ems.EmployeeMapper;
+import com.ems.bo.EmployeeBO;
 import com.ems.entity.Employee;
 import com.ems.repository.EmployeeRepository;
-import com.ems.vo.EmployeeVO;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.slf4j.Logger;
@@ -14,7 +14,6 @@ import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -45,14 +44,14 @@ public class WriterTasklet implements Tasklet {
             return RepeatStatus.FINISHED;
         }
 
-        List<EmployeeVO> employeeVOs = employees.stream()
-                .map(employeeMapper::employeeToEmployeeVO)
+        List<EmployeeBO> employeeBOs = employees.stream()
+                .map(employeeMapper::employeeToEmployeeBO)
                 .collect(Collectors.toList());
 
         try (CSVPrinter csvPrinter = new CSVPrinter(new FileWriter(FILE_NAME), CSVFormat.DEFAULT.withHeader("ID", "Name", "Position", "Salary"))) {
-            for (EmployeeVO employeeVO : employeeVOs) {
-                csvPrinter.printRecord(employeeVO.getId(), employeeVO.getName(), employeeVO.getPosition(), employeeVO.getSalary());
-                logger.info("Writing employee to CSV: {}", employeeVO);
+            for (EmployeeBO employeeBO : employeeBOs) {
+                csvPrinter.printRecord(employeeBO.getId(), employeeBO.getName(), employeeBO.getPosition(), employeeBO.getSalary());
+                logger.info("Writing employee to CSV: {}", employeeBO);
             }
         } catch (IOException e) {
             logger.error("Error writing to CSV file: {}", FILE_NAME, e);
@@ -61,5 +60,4 @@ public class WriterTasklet implements Tasklet {
 
         return RepeatStatus.FINISHED;
     }
-
 }

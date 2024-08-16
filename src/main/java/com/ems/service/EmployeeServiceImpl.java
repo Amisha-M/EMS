@@ -14,79 +14,73 @@ import org.springframework.stereotype.Service;
 import com.ems.EmployeeMapper;
 import com.ems.bo.EmployeeBO;
 import com.ems.entity.Employee;
-import com.ems.repository.EmployeeRepository;
+import com.ems.repository.EmployeeRepository; // Assuming you have a repository
 import com.ems.util.Constants;
-import com.ems.vo.EmployeeVO;
 
 @Service
-public class EmployeeServiceImpl implements EmployeeService{
+public class EmployeeServiceImpl implements EmployeeService {
 
-	private static final Logger logger = LoggerFactory.getLogger(EmployeeService.class);
+    private static final Logger logger = LoggerFactory.getLogger(EmployeeService.class);
 
-	private final EmployeeBO employeeBO;
+    private final EmployeeRepository employeeRepository; // Use repository for CRUD
     private final EmployeeMapper employeeMapper;
 
-    //Constructor injection
     @Autowired
-    public EmployeeServiceImpl(EmployeeBO employeeBO, EmployeeMapper employeeMapper) {
-        this.employeeBO = employeeBO;
+    public EmployeeServiceImpl(EmployeeRepository employeeRepository, EmployeeMapper employeeMapper) {
+        this.employeeRepository = employeeRepository;
         this.employeeMapper = employeeMapper;
     }
-    
-	@Override
-    public EmployeeVO createEmployee(EmployeeVO employeeVO) {
-    	 logger.info(Constants.CREATING_EMPLOYEE_LOG, employeeVO);
-         Employee employee = employeeMapper.employeeVOToEmployee(employeeVO);
-         Employee createdEmployee = employeeBO.createEmployee(employee);
-         EmployeeVO createdEmployeeVO = employeeMapper.employeeToEmployeeVO(createdEmployee);
 
-//        return employeeMapper.employeeToEmployeeVO(createdEmployee);
+    @Override
+    public EmployeeBO createEmployee(EmployeeBO employeeBO) {
+        logger.info(Constants.CREATING_EMPLOYEE_LOG, employeeBO);
+        Employee employee = employeeMapper.employeeBOToEmployee(employeeBO);
+        Employee createdEmployee = employeeRepository.save(employee); // Use repository to save
+        EmployeeBO createdEmployeeBO = employeeMapper.employeeToEmployeeBO(createdEmployee);
 
         try {
             // Marshalling(write) to JSON
-            String json = JaxbUtil.toJson(createdEmployeeVO);
+            String json = JaxbUtil.toJson(createdEmployeeBO);
             logger.info("Created Employee JSON: {}", json);
 
             // Unmarshalling(read) from JSON
-            EmployeeVO unmarshalledEmployeeVO = JaxbUtil.fromJson(json, EmployeeVO.class);
-            logger.info("Unmarshalled EmployeeVO: {}", unmarshalledEmployeeVO);
+            EmployeeBO unmarshalledEmployeeBO = JaxbUtil.fromJson(json, EmployeeBO.class);
+            logger.info("Unmarshalled EmployeeBO: {}", unmarshalledEmployeeBO);
 
         } catch (JAXBException e) {
             logger.error("Error in JSON Conversion", e);
         }
 
-        return createdEmployeeVO;
-     }
-
-	@Override
-    public List<EmployeeVO> getAllEmployees() {
-		 logger.info(Constants.RETRIEVING_ALL_EMPLOYEES_LOG);
-	        List<Employee> employees = employeeBO.getAllEmployees();
-	        return employees.stream()
-	                        .map(employeeMapper::employeeToEmployeeVO)
-	                        .collect(Collectors.toList());
+        return createdEmployeeBO;
     }
 
-	@Override
-    public Optional<EmployeeVO> getEmployeeById(Long id) {
-		logger.info(Constants.RETRIEVING_EMPLOYEE_BY_ID_LOG, id);
-        Optional<Employee> employee = employeeBO.getEmployeeById(id);
-//        return employee.map(employeeMapper::employeeToEmployeeVO);
+    @Override
+    public List<EmployeeBO> getAllEmployees() {
+        logger.info(Constants.RETRIEVING_ALL_EMPLOYEES_LOG);
+        List<Employee> employees = employeeRepository.findAll(); // Use repository to get all employees
+        return employees.stream()
+                .map(employeeMapper::employeeToEmployeeBO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<EmployeeBO> getEmployeeById(Long id) {
+        logger.info(Constants.RETRIEVING_EMPLOYEE_BY_ID_LOG, id);
+        Optional<Employee> employee = employeeRepository.findById(id); // Use repository to find by ID
         return employee.map(emp -> {
-            EmployeeVO employeeVO = employeeMapper.employeeToEmployeeVO(emp);
+            EmployeeBO employeeBO = employeeMapper.employeeToEmployeeBO(emp);
             try {
-                String json = JaxbUtil.toJson(employeeVO);
+                String json = JaxbUtil.toJson(employeeBO);
                 logger.info("Retrieved Employee JSON: {}", json);
 
                 // Unmarshalling(read) from JSON
-                EmployeeVO unmarshalledEmployeeVO = JaxbUtil.fromJson(json, EmployeeVO.class);
-                logger.info("Unmarshalled EmployeeVO: {}", unmarshalledEmployeeVO);
+                EmployeeBO unmarshalledEmployeeBO = JaxbUtil.fromJson(json, EmployeeBO.class);
+                logger.info("Unmarshalled EmployeeBO: {}", unmarshalledEmployeeBO);
 
             } catch (JAXBException e) {
                 logger.error("Error in JSON Conversion", e);
             }
-            return employeeVO;
+            return employeeBO;
         });
     }
-	
 }

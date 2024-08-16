@@ -4,13 +4,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 
+import com.ems.bo.EmployeeBO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
-
-import com.ems.vo.EmployeeVO;
 
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -28,15 +27,15 @@ public class EmployeeSteps {
     @Autowired
     private RestTemplate restTemplate;
 
-    private EmployeeVO employee;
-    private ResponseEntity<EmployeeVO> createResponse;
+    private EmployeeBO employee;
+    private ResponseEntity<EmployeeBO> createResponse;
     private ResponseEntity<List> retrieveResponse;
-    private ResponseEntity<EmployeeVO> retrieveByIdResponse;
+    private ResponseEntity<EmployeeBO> retrieveByIdResponse;
 
     @Given("employee details")
     public void employee_details() {
         log.info("Initializing employee details");
-        employee = new EmployeeVO(null, "Amar Singh", "Software Engg", 50000L);
+        employee = new EmployeeBO(null, "Amar Singh", "Software Engg", 50000L);
         log.info("Employee details initialized: {}", employee);
     }
 
@@ -44,7 +43,7 @@ public class EmployeeSteps {
     public void create_the_employee() {
         baseUrl = "http://localhost:" + port + "/employees";
         log.info("Base URL set to: {}", baseUrl);
-        createResponse = restTemplate.postForEntity(baseUrl + "/create", employee, EmployeeVO.class);
+        createResponse = restTemplate.postForEntity(baseUrl + "/create", employee, EmployeeBO.class);
         log.info("Create response: {}", createResponse);
     }
 
@@ -59,8 +58,8 @@ public class EmployeeSteps {
     @Given("there is a list of employees in the system")
     public void there_is_a_list_of_employees_in_the_system() {
         baseUrl = "http://localhost:" + port + "/employees";
-        employee = new EmployeeVO(null, "Amar Singh", "Software Engg", 60000L);
-        restTemplate.postForEntity(baseUrl + "/create", employee, EmployeeVO.class);
+        employee = new EmployeeBO(null, "Amar Singh", "Software Engg", 60000L);
+        restTemplate.postForEntity(baseUrl + "/create", employee, EmployeeBO.class);
     }
 
     @When("retrieve all employees")
@@ -77,13 +76,13 @@ public class EmployeeSteps {
     @Given("an employee with ID {long} exists")
     public void an_employee_with_ID_exists(Long id) {
         baseUrl = "http://localhost:" + port + "/employees";
-        employee = new EmployeeVO(id, "John Doe", "Developer", 50000L);
-        restTemplate.postForEntity(baseUrl + "/create", employee, EmployeeVO.class);
+        employee = new EmployeeBO(id, "John Doe", "Developer", 50000L);
+        restTemplate.postForEntity(baseUrl + "/create", employee, EmployeeBO.class);
     }
 
     @When("retrieve the employee with ID {long}")
     public void retrieve_the_employee_with_ID(Long id) {
-        retrieveByIdResponse = restTemplate.getForEntity(baseUrl + "/id/" + id, EmployeeVO.class);
+        retrieveByIdResponse = restTemplate.getForEntity(baseUrl + "/id/" + id, EmployeeBO.class);
     }
 
     @Then("get the employee details")

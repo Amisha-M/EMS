@@ -1,10 +1,9 @@
 package com.ems.batch.tasklet;
 
-
 import com.ems.EmployeeMapper;
+import com.ems.bo.EmployeeBO;
 import com.ems.entity.Employee;
 import com.ems.repository.EmployeeRepository;
-import com.ems.vo.EmployeeVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.StepContribution;
@@ -42,15 +41,15 @@ public class ReaderTasklet implements Tasklet {
             throw new IllegalStateException("Employee list is null");
         }
 
-        // Convert Employee entities to EmployeeVOs
-        List<EmployeeVO> employeeVOs = employees.stream()
-                .map(employeeMapper::employeeToEmployeeVO)
+        // Convert Employee entities to EmployeeBOs
+        List<EmployeeBO> employeeBOs = employees.stream()
+                .map(employeeMapper::employeeToEmployeeBO)
                 .collect(Collectors.toList());
 
         // Store the list in the ExecutionContext
-        chunkContext.getStepContext().getStepExecution().getJobExecution().getExecutionContext().put("employeeVOs", employeeVOs);
+        chunkContext.getStepContext().getStepExecution().getJobExecution().getExecutionContext().put("employeeBOs", employeeBOs);
 
-        logger.info("Read {} employees and stored in ExecutionContext", employeeVOs.size());
+        logger.info("Read {} employees and stored in ExecutionContext", employeeBOs.size());
 
         return RepeatStatus.FINISHED;
     }
